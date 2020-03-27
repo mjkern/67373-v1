@@ -23,7 +23,7 @@ function hideShow(button) {
 }
 
 window.addEventListener('message',function(event) {
-    //if(event.origin !== 'https://neqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
+    if(event.origin !== 'https://n-eqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
     // alert('message received:  \n' + event +'\n'+ event.origin +'\n'+JSON.stringify(event.data), event);
-    event.source.postMessage('holla back youngin!',event.origin);
+    event.source.postMessage('holla back youngin! - ' + event.origin ,event.origin);
 },false);
