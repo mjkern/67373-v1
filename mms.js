@@ -16,12 +16,19 @@ function comsInit() {
     
     var iframe = document.querySelectorAll('iframe[data-type="AwesomeTableView"]')[0].contentWindow;
 
-    //periodical message sender
-    setInterval(function(){
-    var message = 'Hello!  The time is: ' + (new Date().getTime());
-    console.log('blog.local:  sending message:  ' + message);
-    iframe.postMessage(message,domain); //send the message and target URI
-    },6000);
+    // initial message
+    function sendInitialMessage() {
+        setTimeout(function () {
+            try {
+                var message = 'Hello!  The time is: ' + (new Date().getTime());
+                console.log('blog.local:  sending message:  ' + message);
+                iframe.postMessage(message,domain); //send the message and target URI
+            } catch (e) {
+                sendInitialMessage();
+            }
+        }, 6000);
+    }
+    sendInitialMessage();
     
     //listen to holla back
     window.addEventListener('message',function(event) {
