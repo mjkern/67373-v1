@@ -23,10 +23,10 @@ function hideShow(button) {
 }
 
 function addUpdateLinks() {
-    document.querySelectorAll(".card-link").forEach(function (card) {
-        card.style.display = "";
-        card.style.backgroundColor = "red";
-    });
+    // document.querySelectorAll(".card-link").forEach(function (card) {
+    //     card.style.display = "";
+    //     card.style.backgroundColor = "red";
+    // });
 }
 
 function edit(row) {
