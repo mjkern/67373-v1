@@ -22,10 +22,19 @@ function hideShow(button) {
     // parent.postMessage('asdf','jkl;');
 }
 
-var editLinkData;
+var editLinkData = [];
 
-function edit(row) {
-    alert("trying to edit - row number " + row);
+function edit(rowNumber) {
+    console.log("trying to edit - row number " + rowNumber);
+    // alert("trying to edit - row number " + rowNumber);
+    link = editLinkData.filter(function (row) {
+        return row[1].toString() === rowNumber;
+    })[0][2];
+    if (link) {
+        window.open(link, '_blank');
+    } else {
+        alert("sorry, no access");
+    }
 }
 
 window.addEventListener('message',function(event) {
