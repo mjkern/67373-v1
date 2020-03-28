@@ -53,3 +53,12 @@ function comsInit() {
     
 }
 comsInit();
+
+google.script.run
+    .withSuccessHandler(function (accessibleLinkData) {
+        console.log(accessibleLinkData);
+    })
+    .withFailureHandler(function (error) {
+        console.log(error);
+    })
+    .accessibleEditLinks();
