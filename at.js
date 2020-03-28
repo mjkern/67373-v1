@@ -4,7 +4,7 @@ function edit(rowNumber) {
     console.log("trying to edit - row number " + rowNumber);
     // alert("trying to edit - row number " + rowNumber);
     linkRows = editLinkData.filter(function (row) {
-        return row[1].toString() === rowNumber;
+        return row[1] == rowNumber;
     });
     console.log(linkRows);
     console.log(linkRows[0]);
