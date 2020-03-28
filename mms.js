@@ -32,7 +32,11 @@ function comsInit() {
         },false);
 
         function sendInitialMessage(iframe) {
-            var message = 'Hello!  The time is: ' + (new Date().getTime());
+            var body = 'Hello!  The time is: ' + (new Date().getTime());
+            var message = {
+                "type": "initMessage",
+                "body": body
+            }
             console.log('blog.local:  sending message: ' + 'message');
             iframe.postMessage(message,domain); //send the message and target URI
             setTimeout(function () {

@@ -35,6 +35,7 @@ function edit(row) {
 
 window.addEventListener('message',function(event) {
     if(event.origin !== 'https://n-eqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
+    if(event.data.type !== "initMessage") return;
     addUpdateLinks();
     event.source.postMessage({"type": "initResponse", "heardFromOrigin": event.origin},event.origin);
 },false);
