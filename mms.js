@@ -1,7 +1,7 @@
 var domain = 'https://view-awesome-table.com/';
 
 function comsInit() {
-    setTimeout(() => {
+    setTimeout(function() {
     
         if (document.querySelectorAll('iframe[data-type="AwesomeTableView"]').length < 1) {
             console.log("too soon");
@@ -22,6 +22,10 @@ function comsInit() {
         var gotResponse = false;
         window.addEventListener('message',function(event) {
             if(event.origin !== 'https://view-awesome-table.com') return;
+            if(event.data.type !== 'initResponse') {
+                console.log("bad response");
+                return;
+            }
             console.log('received response:  ',event.data);
             console.log(event.origin);
             gotResponse=true;
@@ -29,7 +33,7 @@ function comsInit() {
 
         function sendInitialMessage(iframe) {
             var message = 'Hello!  The time is: ' + (new Date().getTime());
-            console.log('blog.local:  sending message:  ' + message);
+            console.log('blog.local:  sending message: ' + 'message');
             iframe.postMessage(message,domain); //send the message and target URI
             setTimeout(function () {
                 if (!gotResponse) {
