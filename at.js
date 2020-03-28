@@ -29,12 +29,12 @@ function addUpdateLinks() {
     });
 }
 
-function edit() {
-    alert("trying to edit");
+function edit(row) {
+    alert("trying to edit - row number " + row);
 }
 
 window.addEventListener('message',function(event) {
-    if(event.origin !== 'https://n-eqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
+    // if(event.origin !== 'https://n-eqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
     addUpdateLinks();
     event.source.postMessage({"type": "initResponse", "heardFromOrigin": event.origin},event.origin);
 },false);

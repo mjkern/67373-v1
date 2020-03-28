@@ -1,10 +1,10 @@
-<a href="{{[Document Studio] File Link}}" target="_blank" class="card-link" style="display: none">
- <div class="description" data-spreadsheet-row="{{Title}}">
+<a href="{{Link}}" target="_blank" class="card-link" style="display: none">
+ <div class="description" data-spreadsheet-row="{{Row}}">
     <p class="myTitle">{{Title}}</p>
     <p class="description">{{Description}}</p>
         <p><b>Subject</b><p>
         <p class="subject">{{Subject(s)}}</p><p><b>Grade</b><p>
         <p class="grade">{{Grade Level(s)}}</p>
-        <p><button onclick="edit()">Edit</button></p>
  </div>
 </a>
+<button onclick="edit('{{Row}}')">Edit</button>
