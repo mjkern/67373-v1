@@ -3,20 +3,14 @@ var domain = 'https://view-awesome-table.com/';
 function comsInit() {
     setTimeout(function() {
     
+        // make sure the awesome table exists and check back later if needed
         if (document.querySelectorAll('iframe[data-type="AwesomeTableView"]').length < 1) {
             console.log("too soon");
             comsInit();
             return;
         }
         
-        console.log("logging works at least");
-        console.log(document.getElementById('sandboxFrame'));
-        console.log(document.getElementById('userHtmlFrame'));
-        console.log(document.querySelectorAll('iframe[data-type="AwesomeTableView"]')[0]);
-        console.log(document.getElementById('dashboard'));
-        
         iframe = document.querySelectorAll('iframe[data-type="AwesomeTableView"]')[0].contentWindow;
-
         
         //listen to holla back
         var gotResponse = false;
@@ -31,34 +25,34 @@ function comsInit() {
             gotResponse=true;
         },false);
 
-        function sendInitialMessage(iframe) {
-            var body = 'Hello!  The time is: ' + (new Date().getTime());
-            var message = {
-                "type": "initMessage",
-                "body": body
-            }
-            console.log('blog.local:  sending message: ' + 'message');
-            iframe.postMessage(message,domain); //send the message and target URI
-            setTimeout(function () {
-                if (!gotResponse) {
-                    sendInitialMessage(iframe);
-                }
-            }, 1000);
-        }
-
+        
         // initial message
+        function sendInitialMessage(iframe) {
+            google.script.run // this could all be more efficient
+                .withSuccessHandler(function (accessibleLinkData) {
+                    console.log(accessibleLinkData);
+                    var body = 'Hello!  The time is: ' + (new Date().getTime());
+                    var message = {
+                        "type": "initMessage",
+                        "body": body,
+                        "accessibleLinkData": accessibleLinkData
+                    };
+                    console.log('blog.local:  sending message: ' + 'message');
+                    iframe.postMessage(message,domain); //send the message and target URI
+                    setTimeout(function () {
+                        if (!gotResponse) {
+                            sendInitialMessage(iframe);
+                        }
+                    }, 1000);
+                })
+                .withFailureHandler(function (error) {
+                    console.log(error);
+                })
+                .accessibleEditLinks();
+        }
         sendInitialMessage(iframe);
 
     }, 10);
     
 }
 comsInit();
-
-google.script.run
-    .withSuccessHandler(function (accessibleLinkData) {
-        console.log(accessibleLinkData);
-    })
-    .withFailureHandler(function (error) {
-        console.log(error);
-    })
-    .accessibleEditLinks();

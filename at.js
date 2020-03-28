@@ -22,12 +22,7 @@ function hideShow(button) {
     // parent.postMessage('asdf','jkl;');
 }
 
-function addUpdateLinks() {
-    // document.querySelectorAll(".card-link").forEach(function (card) {
-    //     card.style.display = "";
-    //     card.style.backgroundColor = "red";
-    // });
-}
+var editLinkData;
 
 function edit(row) {
     alert("trying to edit - row number " + row);
@@ -36,6 +31,6 @@ function edit(row) {
 window.addEventListener('message',function(event) {
     if(event.origin !== 'https://n-eqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
     if(event.data.type !== "initMessage") return;
-    addUpdateLinks();
-    event.source.postMessage({"type": "initResponse", "heardFromOrigin": event.origin},event.origin);
+    editLinkData = event.data.accessibleLinkData;
+    event.source.postMessage({"type": "initResponse", "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
 },false);
