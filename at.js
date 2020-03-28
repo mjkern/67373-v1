@@ -29,6 +29,10 @@ function addUpdateLinks() {
     });
 }
 
+function edit() {
+    alert("trying to edit");
+}
+
 window.addEventListener('message',function(event) {
     if(event.origin !== 'https://n-eqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
     addUpdateLinks();
