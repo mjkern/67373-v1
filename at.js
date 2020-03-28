@@ -1,6 +1,6 @@
 var editLinkData = [];
 
-function edit(rowNumber) {
+function edit(rowNumber, button) {
     console.log("trying to edit - row number " + rowNumber);
     // alert("trying to edit - row number " + rowNumber);
     linkRows = editLinkData.filter(function (row) {
@@ -14,7 +14,8 @@ function edit(rowNumber) {
     }
     else {
         console.log("no access");
-        alert("Sorry, only the creator and Matt's Maker Space facilitators can edit this lesson plan. Please account managment page for more information.");
+        button.innerText = "No Edit Access";
+        // alert("Sorry, only the creator and Matt's Maker Space facilitators can edit this lesson plan. Please account managment page for more information.");
     }
 }
 
