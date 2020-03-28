@@ -22,12 +22,15 @@ function hideShow(button) {
     // parent.postMessage('asdf','jkl;');
 }
 
-// function addUpdateLinks() {
-//     // document.querySelectorAll(".card-link").forEach(card)
-// }
+function addUpdateLinks() {
+    document.querySelectorAll(".card-link").forEach(function (card) {
+        card.style.display = "";
+        card.style.backgroundColor = "red";
+    });
+}
 
 window.addEventListener('message',function(event) {
     if(event.origin !== 'https://n-eqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
-    //alert('message received:  \n' + event +'\n'+ event.origin +'\n'+JSON.stringify(event.data), event);
+    addUpdateLinks();
     event.source.postMessage({"type": "initResponse", "heardFromOrigin": event.origin},event.origin);
 },false);
