@@ -1,0 +1,46 @@
+
+//////// working on only showing links where appropriate ////////
+// Select the node that will be observed for mutations
+const targetNode = document.documentElement;
+
+// Options for the observer (which mutations to observe)
+const config = { attributes: false, childList: true, subtree: true };
+
+// taken from
+//https://stackoverflow.com/questions/5898656/check-if-an-element-contains-a-class-in-javascript
+function hasClass(element, className) {
+    return (' ' + element.className + ' ').indexOf(' ' + className+ ' ') > -1;
+}
+
+function updateEditLinks(node) {
+    if (hasClass(node, "edit-link")) {
+        console.log(node);
+    }
+
+    for (var i = 0; i < node.children; i++) {
+        updateEditLinks(node.children[i]);
+    }
+}
+
+// Callback function to execute when mutations are observed
+const callback = function(mutationRecords, observer) {
+    // Use traditional 'for loops' for IE 11
+    // for(let addition of mutationRecord.addedNodes) {
+    //     // if (mutation.type === 'childList') {
+    //     //     console.log('A child node has been added or removed.');
+    //     // }
+    //     // else if (mutation.type === 'attributes') {
+    //     //     console.log('The ' + mutation.attributeName + ' attribute was modified.');
+    //     // }
+    // }
+    console.log("nodes added:");
+    mutationRecords.forEach(function(record) {
+        record.addedNodes.forEach(updateEditLinks);
+    });
+};
+
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(callback);
+
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);
