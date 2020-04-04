@@ -20,7 +20,7 @@ function edit(rowNumber, button) {
 }
 
 window.addEventListener('message',function(event) {
-    if(event.origin !== 'https://n-eqadiyagk5beydaifnjqivawwbzm2n5gqy5jccq-0lu-script.googleusercontent.com') return;
+    if(event.origin !== 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com') return;
     if(event.data.type !== "initMessage") return;
     editLinkData = event.data.accessibleLinkData;
     event.source.postMessage({"type": "initResponse", "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);

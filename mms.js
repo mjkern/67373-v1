@@ -1,3 +1,4 @@
+// domain of the awesome table iframe that we will be messaging
 var domain = 'https://view-awesome-table.com/';
 
 function comsInit() {
