@@ -44,22 +44,13 @@ function doSlightlyLater(f) {
 }
 
 doSlightlyLater(function () {
-    var tableNodes = document.querySelectorAll(".awesomeTable-visualization-cards");
+    var tableNodes = document.querySelectorAll("body");
     console.assert(tableNodes.length == 1);
     table = tableNodes[0];
     console.log(table);
 
     var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function (mutation) {
-            // mutation.addedNodes.forEach(function (addedNode) {
-            //     console.log(addedNode);
-            //     cards = addedNode.getElementsByClassName("custom-card-content");
-            //     for (var i = 0; i < cards.length; i++) {
-            //         const card = cards[i];
-            //         addEditButtonToCard(card);
-            //         console.log(card);
-            //     }
-            // });
             if (mutation.addedNodes.length > 0) {
                 cards = document.querySelectorAll(".custom-card-content");
                 for (var i = 0; i < cards.length; i++) {
