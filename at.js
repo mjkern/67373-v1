@@ -32,9 +32,13 @@ doSlightlyLater(function () {
     table = tableNodes[0];
     console.log(table);
 
-    // var observer = new MutationObserver();
+    var observer = new MutationObserver(function(mutations) {
+        console.log(mutations);
+    });
 
-    // observer.
+    observer.observe(table, {
+        childList: true
+    });
 });
 
 ////////////////////////////////////////////////////////////////////////////////
