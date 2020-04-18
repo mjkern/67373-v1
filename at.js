@@ -9,14 +9,14 @@ initResponseType = 'initResponse';
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
 ////////////////////////////////////////////////////////////////////////////////
-var editLinkData = [];
+var editLinkData = {};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Listeners
 ////////////////////////////////////////////////////////////////////////////////
 function addEditButtonToCard(card) {
     
-    if (card.hasAttribute("data-has-button")){ return; }
+    if (card.hasAttribute("data-button-done")){ return; }
 
     const editButton = document.createElement('button');
     editButton.class = "edit-button";
@@ -24,7 +24,7 @@ function addEditButtonToCard(card) {
     editButton.onclick = function () { edit(row, editButton); };
     editButton.appendChild(document.createTextNode("Edit"));
     card.appendChild(editButton);
-    card.setAttribute("data-has-button", "");
+    card.setAttribute("data-button-done", "");
 }
 
 window.addEventListener('message',function(event) {
@@ -67,19 +67,12 @@ observer.observe(body, {
 ////////////////////////////////////////////////////////////////////////////////
 function edit(rowNumber, button) {
     console.log("trying to edit - row number " + rowNumber);
-    // alert("trying to edit - row number " + rowNumber);
-    linkRows = editLinkData.filter(function (row) {
-        return row[1] == rowNumber;
-    });
-    console.log(linkRows);
-    console.log(linkRows[0]);
-    // window.open(linkRows[0][2], '_blank');
-    if (linkRows.length > 0) {
-        window.open(linkRows[0][2], '_blank');
+    link = editLinkData[rowNumber];
+    if (link) {
+        window.open(link, '_blank');
     }
     else {
         console.log("no access");
         button.innerText = "No Edit Access";
-        // alert("Sorry, only the creator and Matt's Maker Space facilitators can edit this lesson plan. Please account managment page for more information.");
     }
 }
