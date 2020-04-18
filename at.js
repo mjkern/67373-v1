@@ -2,21 +2,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
 ////////////////////////////////////////////////////////////////////////////////
-domain = 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com';
-initMessageType = 'initMessage';
-initResponseType = 'initResponse';
+const domain = 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com';
+const initMessageType = 'initMessage';
+const initResponseType = 'initResponse';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
 ////////////////////////////////////////////////////////////////////////////////
-var editLinkData = {};
+var editLinkData = null;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Listeners
 ////////////////////////////////////////////////////////////////////////////////
 function addEditButtonToCard(card) {
-    
     if (card.hasAttribute("data-button-done")){ return; }
+    if (editLinkData == null){ return; }
 
     const editButton = document.createElement('button');
     editButton.class = "edit-button";
@@ -67,6 +67,10 @@ observer.observe(body, {
 ////////////////////////////////////////////////////////////////////////////////
 function edit(rowNumber, button) {
     console.log("trying to edit - row number " + rowNumber);
+    if (editLinkData == null) {
+        console.log("no access data yet");
+        return;
+    }
     link = editLinkData[rowNumber];
     if (link) {
         window.open(link, '_blank');
