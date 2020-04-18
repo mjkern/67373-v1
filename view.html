@@ -1,10 +1,13 @@
-<a href="{{Link}}" target="_blank" class="card-link">
- <div class="description" data-spreadsheet-row="{{Row}}">
-    <p class="myTitle">{{Title}}</p>
-    <p class="description">{{Description}}</p>
-        <p><b>Subject</b><p>
-        <p class="subject">{{Subject(s)}}</p><p><b>Grade</b><p>
-        <p class="grade">{{Grade Level(s)}}</p>
- </div>
-</a>
-<button onclick="edit({{Row}}, this)" class="edit-button">Edit</button>
+<div class="custom-card-content">
+    <a href="{{Link}}" target="_blank" class="card-link">
+        <div class="description" data-spreadsheet-row="{{Row}}">
+            <p class="myTitle">{{Title of Lesson}}</p>
+            <p class="description">{{Description}}</p>
+                <p><b>Subject</b><p>
+                <p class="subject">{{Subject(s)}}</p><p><b>Grade</b><p>
+                <p class="grade">{{Grade Level(s)}}</p>
+         </div>
+    </a>
+    <div class="edit-div">
+    </div>
+</div>

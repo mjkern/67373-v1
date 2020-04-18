@@ -19,32 +19,40 @@ window.addEventListener('message',function(event) {
     if(event.data.type !== initMessageType) return;
     editLinkData = event.data.accessibleLinkData;
     event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
+
+    cards = document.querySelectorAll(".custom-card-content");
+    console.log(cards);
+    for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        card.style.backgroundColor = "red";
+    }
+    var someHtml = '<button onclick="edit({{Row}}, this)" class="edit-button">Edit</button>'
 },false);
 
 // for DOM updates in the awesome table cards
-function doSlightlyLater(f) {
-    setTimeout(f, 5000);
-}
+// function doSlightlyLater(f) {
+//     setTimeout(f, 5000);
+// }
 
-doSlightlyLater(function () {
-    var tableNodes = document.querySelectorAll(".awesomeTable-visualization-cards");
-    console.assert(tableNodes.length == 1);
-    table = tableNodes[0];
-    console.log(table);
+// doSlightlyLater(function () {
+//     var tableNodes = document.querySelectorAll(".awesomeTable-visualization-cards");
+//     console.assert(tableNodes.length == 1);
+//     table = tableNodes[0];
+//     console.log(table);
 
-    var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function (mutation) {
-            mutation.addedNodes.forEach(function (addedNode) {
-                console.log(addedNode);
-            });
-        });
-    });
+//     var observer = new MutationObserver(function(mutations) {
+//         mutations.forEach(function (mutation) {
+//             mutation.addedNodes.forEach(function (addedNode) {
+//                 console.log(addedNode);
+//             });
+//         });
+//     });
 
-    observer.observe(table, {
-        childList: true,
-        subtree: true
-    });
-});
+//     observer.observe(table, {
+//         childList: true,
+//         subtree: true
+//     });
+// });
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
