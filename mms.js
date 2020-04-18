@@ -116,7 +116,7 @@ function sendInitialMessage(iframe) {
 // send the init message to the awesome table until it confirms that it is received
 function sendDataToAwesomeTable() {
     iframe = document.querySelectorAll('iframe[data-type="AwesomeTableView"]')[0].contentWindow;
-    doUntil(sendInitialMessage(iframe), awesomeTableConfirmed);
+    doUntil(function() { sendInitialMessage(iframe); }, awesomeTableConfirmed);
     
 }
 
