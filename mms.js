@@ -96,7 +96,7 @@ function getAccessInfo() {
         })
         .withFailureHandler(function(error) {
             console.log(error);
-            doSlighlyLater(getAccessInfo);
+            doSlightlyLater(getAccessInfo);
         })
         .accessibleEditLinks();
 }

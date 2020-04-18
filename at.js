@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
 ////////////////////////////////////////////////////////////////////////////////
-const domain = 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com';
+const parentOrigin = 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com';
 const initMessageType = 'initMessage';
 const initResponseType = 'initResponse';
 
@@ -17,18 +17,19 @@ var editLinkData = null;
 function addEditButtonToCard(card) {
     if (card.hasAttribute("data-button-done")){ return; }
     if (editLinkData == null){ return; }
-
-    const editButton = document.createElement('button');
-    editButton.class = "edit-button";
     const row = card.getAttribute('data-spreadsheet-row');
-    editButton.onclick = function () { edit(row, editButton); };
-    editButton.appendChild(document.createTextNode("Edit"));
-    card.appendChild(editButton);
+    if (editLinkData[row]) {
+        const editButton = document.createElement('button');
+        editButton.class = "edit-button";
+        editButton.onclick = function () { edit(row, editButton); };
+        editButton.appendChild(document.createTextNode("Edit"));
+        card.appendChild(editButton);
+    }
     card.setAttribute("data-button-done", "");
 }
 
 window.addEventListener('message',function(event) {
-    if(event.origin !== domain) return;
+    if(event.origin !== parentOrigin) return;
     if(event.data.type !== initMessageType) return;
     editLinkData = event.data.accessibleLinkData;
     event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
