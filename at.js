@@ -1,5 +1,29 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// Constants
+////////////////////////////////////////////////////////////////////////////////
+domain = 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com';
+initMessageType = 'initMessage';
+initResponseType = 'initResponse';
+
+////////////////////////////////////////////////////////////////////////////////
+// Variables
+////////////////////////////////////////////////////////////////////////////////
 var editLinkData = [];
 
+////////////////////////////////////////////////////////////////////////////////
+// Listeners
+////////////////////////////////////////////////////////////////////////////////
+window.addEventListener('message',function(event) {
+    if(event.origin !== domain) return;
+    if(event.data.type !== initMessageType) return;
+    editLinkData = event.data.accessibleLinkData;
+    event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
+},false);
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions
+////////////////////////////////////////////////////////////////////////////////
 function edit(rowNumber, button) {
     console.log("trying to edit - row number " + rowNumber);
     // alert("trying to edit - row number " + rowNumber);
@@ -18,10 +42,3 @@ function edit(rowNumber, button) {
         // alert("Sorry, only the creator and Matt's Maker Space facilitators can edit this lesson plan. Please account managment page for more information.");
     }
 }
-
-window.addEventListener('message',function(event) {
-    if(event.origin !== 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com') return;
-    if(event.data.type !== "initMessage") return;
-    editLinkData = event.data.accessibleLinkData;
-    event.source.postMessage({"type": "initResponse", "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
-},false);
