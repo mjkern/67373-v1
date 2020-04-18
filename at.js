@@ -14,6 +14,16 @@ var editLinkData = [];
 ////////////////////////////////////////////////////////////////////////////////
 // Listeners
 ////////////////////////////////////////////////////////////////////////////////
+function addEditButtonToCard(card) {
+    const editButton = document.createElement('button');
+    editButton.class = "edit-button";
+    const row = card.getAttribute('data-spreadsheet-row');
+    editButton.onclick = function () { edit(row, editButton); };
+    editButton.appendChild(document.createTextNode("Edit"));
+    card.appendChild(editButton);
+    card.setAttribute("data-has-button", "");
+}
+
 window.addEventListener('message',function(event) {
     if(event.origin !== domain) return;
     if(event.data.type !== initMessageType) return;
@@ -24,40 +34,50 @@ window.addEventListener('message',function(event) {
     console.log(cards);
     for (var i = 0; i < cards.length; i++) {
         const card = cards[i];
-        const editButton = document.createElement('button');
-        editButton.class = "edit-button";
-        const row = card.getAttribute('data-spreadsheet-row');
-        editButton.onclick = function () { edit(row, editButton); };
-        editButton.appendChild(document.createTextNode("Edit"));
-        card.appendChild(editButton);
+        addEditButtonToCard(card);
     }
-    var someHtml = '<button onclick="edit({{Row}}, this)" class="edit-button">Edit</button>';
 },false);
 
 // for DOM updates in the awesome table cards
-// function doSlightlyLater(f) {
-//     setTimeout(f, 5000);
-// }
+function doSlightlyLater(f) {
+    setTimeout(f, 5000);
+}
 
-// doSlightlyLater(function () {
-//     var tableNodes = document.querySelectorAll(".awesomeTable-visualization-cards");
-//     console.assert(tableNodes.length == 1);
-//     table = tableNodes[0];
-//     console.log(table);
+doSlightlyLater(function () {
+    var tableNodes = document.querySelectorAll(".awesomeTable-visualization-cards");
+    console.assert(tableNodes.length == 1);
+    table = tableNodes[0];
+    console.log(table);
 
-//     var observer = new MutationObserver(function(mutations) {
-//         mutations.forEach(function (mutation) {
-//             mutation.addedNodes.forEach(function (addedNode) {
-//                 console.log(addedNode);
-//             });
-//         });
-//     });
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function (mutation) {
+            // mutation.addedNodes.forEach(function (addedNode) {
+            //     console.log(addedNode);
+            //     cards = addedNode.getElementsByClassName("custom-card-content");
+            //     for (var i = 0; i < cards.length; i++) {
+            //         const card = cards[i];
+            //         addEditButtonToCard(card);
+            //         console.log(card);
+            //     }
+            // });
+            if (mutation.addedNodes.length > 0) {
+                cards = document.querySelectorAll(".custom-card-content");
+                for (var i = 0; i < cards.length; i++) {
+                    const card = cards[i];
+                    if (!card.hasAttribute("data-has-button")){
+                        addEditButtonToCard(card);
+                    }
+                }
+                return;
+            }
+        });
+    });
 
-//     observer.observe(table, {
-//         childList: true,
-//         subtree: true
-//     });
-// });
+    observer.observe(table, {
+        childList: true,
+        subtree: true
+    });
+});
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
