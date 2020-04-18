@@ -33,11 +33,14 @@ doSlightlyLater(function () {
     console.log(table);
 
     var observer = new MutationObserver(function(mutations) {
-        console.log(mutations);
+        mutations.forEach(function (mutation) {
+            console.log(mutation);
+        });
     });
 
     observer.observe(table, {
-        childList: true
+        childList: true,
+        subtree: true
     });
 });
 
