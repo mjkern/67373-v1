@@ -34,7 +34,9 @@ doSlightlyLater(function () {
 
     var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function (mutation) {
-            console.log(mutation);
+            mutation.addedNodes.forEach(function (addedNode) {
+                console.log(addedNode);
+            });
         });
     });
 
