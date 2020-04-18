@@ -23,8 +23,7 @@ window.addEventListener('message',function(event) {
     cards = document.querySelectorAll(".custom-card-content");
     console.log(cards);
     for (var i = 0; i < cards.length; i++) {
-        const card = cards[j];
-        card.style.backgroundColor = "red";
+        const card = cards[i];
         const editButton = document.createElement('button');
         editButton.class = "edit-button";
         const row = card.getAttribute('data-spreadsheet-row');
