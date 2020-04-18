@@ -15,6 +15,9 @@ var editLinkData = [];
 // Listeners
 ////////////////////////////////////////////////////////////////////////////////
 function addEditButtonToCard(card) {
+    
+    if (card.hasAttribute("data-has-button")){ return; }
+
     const editButton = document.createElement('button');
     editButton.class = "edit-button";
     const row = card.getAttribute('data-spreadsheet-row');
@@ -39,35 +42,24 @@ window.addEventListener('message',function(event) {
 },false);
 
 // for DOM updates in the awesome table cards
-function doSlightlyLater(f) {
-    setTimeout(f, 5000);
-}
+var body = document.querySelector("body");
 
-doSlightlyLater(function () {
-    var tableNodes = document.querySelectorAll("body");
-    console.assert(tableNodes.length == 1);
-    table = tableNodes[0];
-    console.log(table);
-
-    var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function (mutation) {
-            if (mutation.addedNodes.length > 0) {
-                cards = document.querySelectorAll(".custom-card-content");
-                for (var i = 0; i < cards.length; i++) {
-                    const card = cards[i];
-                    if (!card.hasAttribute("data-has-button")){
-                        addEditButtonToCard(card);
-                    }
-                }
-                return;
+var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function (mutation) {
+        if (mutation.addedNodes.length > 0) {
+            cards = document.querySelectorAll(".custom-card-content");
+            for (var i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                addEditButtonToCard(card);
             }
-        });
+            return;
+        }
     });
+});
 
-    observer.observe(table, {
-        childList: true,
-        subtree: true
-    });
+observer.observe(body, {
+    childList: true,
+    subtree: true
 });
 
 ////////////////////////////////////////////////////////////////////////////////
