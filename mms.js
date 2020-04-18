@@ -1,6 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////
+// Constants
+////////////////////////////////////////////////////////////////////////////////
+
 // for sending messages to the awesome table
 var domain = 'https://view-awesome-table.com';
 
+////////////////////////////////////////////////////////////////////////////////
+// Variables
+////////////////////////////////////////////////////////////////////////////////
+
+// will store the edit access information
+accessInfo = null;
+
+// true once the awesome table confirms that it recieved the access info
+var gotResponse = false;
+
+////////////////////////////////////////////////////////////////////////////////
+// Helper Functions
+////////////////////////////////////////////////////////////////////////////////
 function doSlightlyLater(f) {
     setTimeout(f, 1000);
 }
@@ -28,8 +45,11 @@ function doWhenBoth(p1, p2, f) {
     }
 }
 
-//listen to holla back
-var gotResponse = false;
+////////////////////////////////////////////////////////////////////////////////
+// Event Listeners
+////////////////////////////////////////////////////////////////////////////////
+
+// listen for web socket messages
 window.addEventListener('message',function(event) {
     console.log("got a response before checking origin");
     console.log(event.origin);
@@ -43,11 +63,30 @@ window.addEventListener('message',function(event) {
     gotResponse=true;
 },false);
 
+////////////////////////////////////////////////////////////////////////////////
+// State checking boolean functions
+////////////////////////////////////////////////////////////////////////////////
+
+// true once the awesome table exists in the DOM
 function awesomeTableExists() {
     return document.querySelectorAll('iframe[data-type="AwesomeTableView"]').length > 0;
 }
 
-accessInfo = null;
+// true once the access info has been received from the google sheet
+function accessInfoRecieved() {
+    return accessInfo !== null;
+}
+
+// true once the awesome table confirms receipt of the init message
+function awesomeTableConfirmed() {
+    return gotResponse;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions
+////////////////////////////////////////////////////////////////////////////////
+
+// get the access information for editing lesson plans from the google sheet
 function getAccessInfo() {
     console.log("getting access info");
     google.script.run
@@ -61,14 +100,8 @@ function getAccessInfo() {
         })
         .accessibleEditLinks();
 }
-function accessInfoRecieved() {
-    return accessInfo !== null;
-}
 
-function awesomeTableConfirmed() {
-    return gotResponse;
-}
-
+// sends an init message to the given iframe
 function sendInitialMessage(iframe) {
     var body = 'Hello!  The time is: ' + (new Date().getTime());
     var message = {
@@ -80,12 +113,16 @@ function sendInitialMessage(iframe) {
     iframe.postMessage(message,domain); //send the message and target URI
 }
 
+// send the init message to the awesome table until it confirms that it is received
 function sendDataToAwesomeTable() {
     iframe = document.querySelectorAll('iframe[data-type="AwesomeTableView"]')[0].contentWindow;
-    sendInitialMessage(iframe);
+    doUntil(sendInitialMessage(iframe), awesomeTableConfirmed);
+    
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Actually do stuff
+////////////////////////////////////////////////////////////////////////////////
+
 getAccessInfo();
-doWhenBoth(awesomeTableExists, accessInfoRecieved, function() { 
-    doUntil(sendDataToAwesomeTable, awesomeTableConfirmed);
-});
+doWhenBoth(awesomeTableExists, accessInfoRecieved, sendDataToAwesomeTable);
