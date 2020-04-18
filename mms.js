@@ -3,14 +3,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // for sending messages to the awesome table
-var domain = 'https://view-awesome-table.com';
+const domain = 'https://view-awesome-table.com';
+const initMessageType = 'initMessage';
+const initResponseType = 'initResponse';
+const deleteMessageType = 'deleteMessage';
+const deleteResponseType = 'deleteResponse';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
 ////////////////////////////////////////////////////////////////////////////////
 
 // will store the edit access information
-accessInfo = null;
+var accessInfo = null;
 
 // true once the awesome table confirms that it recieved the access info
 var gotResponse = false;
@@ -19,7 +23,7 @@ var gotResponse = false;
 // Helper Functions
 ////////////////////////////////////////////////////////////////////////////////
 function doSlightlyLater(f) {
-    setTimeout(f, 1000);
+    setTimeout(f, 100);
 }
 
 function doWhen(f, p) {
@@ -50,17 +54,35 @@ function doWhenBoth(p1, p2, f) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // listen for web socket messages
-window.addEventListener('message',function(event) {
-    console.log("got a response before checking origin");
-    console.log(event.origin);
+window.addEventListener('message', function(event) {
+    console.log("got a message from " + event.origin);
     if(event.origin !== domain) return;
-    if(event.data.type !== 'initResponse') {
-        console.log("bad response");
-        return;
+    switch (event.data.type) {
+        case initResponseType:
+            console.log('received response:  ',event.data);
+            console.log(event.origin);
+            gotResponse=true;
+            break;
+        case deleteMessageType:
+            console.log('received delete message');
+            google.script.run
+                .withSuccessHandler(function(deleted) {
+                    if (deleted) {
+                        console.log("successfully deleted");
+                    } else {
+                        console.log("no delete permission");
+                    }
+                })
+                .withFailureHandler(function(error) {
+                    console.log("failed to delete:");
+                    console.log(error);
+                })
+                .deleteLessonPlan(event.data.rowNumber);
+            break;
+        default:
+            console.log("unknown message type");
     }
-    console.log('received response:  ',event.data);
-    console.log(event.origin);
-    gotResponse=true;
+    
 },false);
 
 ////////////////////////////////////////////////////////////////////////////////

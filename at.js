@@ -5,11 +5,14 @@
 const parentOrigin = 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com';
 const initMessageType = 'initMessage';
 const initResponseType = 'initResponse';
+const deleteMessageType = 'deleteMessage';
+const deleteResponseType = 'deleteResponse';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
 ////////////////////////////////////////////////////////////////////////////////
 var editLinkData = null;
+var parentSource = null;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Listeners
@@ -25,6 +28,11 @@ function addEditButtonToCard(card) {
         editButton.appendChild(document.createTextNode("Edit"));
         card.appendChild(editButton);
     }
+    const deleteButton = document.createElement('button');
+    deleteButton.appendChild(document.createTextNode('Delete'));
+    deleteButton.class = "delete-button";
+    deleteButton.onclick = function() { deleteLessonPlan(row); };
+    card.appendChild(deleteButton);
     card.setAttribute("data-button-done", "");
 }
 
@@ -32,6 +40,7 @@ window.addEventListener('message',function(event) {
     if(event.origin !== parentOrigin) return;
     if(event.data.type !== initMessageType) return;
     editLinkData = event.data.accessibleLinkData;
+    parentSource = event.source;
     event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
 
     cards = document.querySelectorAll(".custom-card-content");
@@ -80,4 +89,12 @@ function edit(rowNumber, button) {
         console.log("no access");
         button.innerText = "No Edit Access";
     }
+}
+
+function deleteLessonPlan(rowNumber) {
+    if (parentSource == null) {
+        console.log("no parent source yet");
+        return;
+    }
+    parentSource.postMessage({"type": deleteMessageType, "rowNumber": rowNumber}, parentOrigin);
 }
