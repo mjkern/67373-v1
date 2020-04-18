@@ -25,8 +25,16 @@ window.addEventListener('message',function(event) {
     for (var i = 0; i < cards.length; i++) {
         var card = cards[i];
         card.style.backgroundColor = "red";
+        var editButton = document.createElement('button', {
+            class: 'edit-button',
+            onClick: 'edit(' + card.getAttribute('data-spreadsheet-row') + ', this)'
+        });
+        editButton.class = "edit-button";
+        editButton.onclick = function () {edit(card.getAttribute('data-spreadsheet-row'), editButton); };
+        editButton.appendChild(document.createTextNode("Edit"));
+        card.appendChild(editButton);
     }
-    var someHtml = '<button onclick="edit({{Row}}, this)" class="edit-button">Edit</button>'
+    var someHtml = '<button onclick="edit({{Row}}, this)" class="edit-button">Edit</button>';
 },false);
 
 // for DOM updates in the awesome table cards
