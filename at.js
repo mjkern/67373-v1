@@ -21,6 +21,22 @@ window.addEventListener('message',function(event) {
     event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
 },false);
 
+// for DOM updates in the awesome table cards
+function doSlightlyLater(f) {
+    setTimeout(f, 5000);
+}
+
+doSlightlyLater(function () {
+    var tableNodes = document.querySelectorAll(".awesomeTable-visualization-cards");
+    console.assert(tableNodes.length == 1);
+    table = tableNodes[0];
+    console.log(table);
+
+    // var observer = new MutationObserver();
+
+    // observer.
+});
+
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 ////////////////////////////////////////////////////////////////////////////////
