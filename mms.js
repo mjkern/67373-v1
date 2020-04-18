@@ -1,7 +1,7 @@
 // domain of the awesome table iframe that we will be messaging
 var domain = 'https://view-awesome-table.com/';
 
-function doSlighlyLater(f) {
+function doSlightlyLater(f) {
     setTimeout(f, 1000);
 }
 
@@ -9,14 +9,14 @@ function doWhen(f, p) {
     if (p()) {
         f();
     } else {
-        doSlighlyLater(doWhen(f, p));
+        doSlightlyLater(function () { doWhen(f, p); });
     }
 }
 
 function doUntil(f, p) {
     if (!p()) {
         f();
-        doSlighlyLater(doUntil(f, p));
+        doSlightlyLater(function () { doUntil(f, p); });
     }
 }
 
@@ -24,7 +24,7 @@ function doWhenBoth(p1, p2, f) {
     if (p1() && p2()) {
         f();
     } else {
-        doSlighlyLater(doWhenBoth(p1, p2, f));
+        doSlightlyLater(function () { doWhenBoth(p1, p2, f); });
     }
 }
 
@@ -47,11 +47,13 @@ function awesomeTableExists() {
 
 accessInfo = null;
 function getAccessInfo() {
+    console.log("getting access info");
     google.scrip.run
         .withSuccessHandler(function(accessInfoResult) {
+            console.log("got access info");
             accessInfo = accessInfoResult;
         })
-        .withSuccessHandler(function(error) {
+        .withFailureHandler(function(error) {
             console.log(error);
             doSlighlyLater(getAccessInfo);
         })
@@ -81,6 +83,7 @@ function sendDataToAwesomeTable() {
     sendInitialMessage(iframe);
 }
 
+getAccessInfo();
 doWhenBoth(awesomeTableExists, accessInfoRecieved, function() { 
     doUntil(sendDataToAwesomeTable, awesomeTableConfirmed);
 });
