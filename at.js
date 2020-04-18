@@ -23,14 +23,12 @@ window.addEventListener('message',function(event) {
     cards = document.querySelectorAll(".custom-card-content");
     console.log(cards);
     for (var i = 0; i < cards.length; i++) {
-        var card = cards[i];
+        const card = cards[j];
         card.style.backgroundColor = "red";
-        var editButton = document.createElement('button', {
-            class: 'edit-button',
-            onClick: 'edit(' + card.getAttribute('data-spreadsheet-row') + ', this)'
-        });
+        const editButton = document.createElement('button');
         editButton.class = "edit-button";
-        editButton.onclick = function () {edit(card.getAttribute('data-spreadsheet-row'), editButton); };
+        const row = card.getAttribute('data-spreadsheet-row');
+        editButton.onclick = function () { edit(row, editButton); };
         editButton.appendChild(document.createTextNode("Edit"));
         card.appendChild(editButton);
     }
