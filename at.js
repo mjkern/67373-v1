@@ -13,6 +13,7 @@ const deleteResponseType = 'deleteResponse';
 ////////////////////////////////////////////////////////////////////////////////
 var editLinkData = null;
 var parentSource = null;
+var deleteAccess = null;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Listeners
@@ -28,21 +29,23 @@ function addEditButtonToCard(card) {
         editButton.appendChild(document.createTextNode("Edit"));
         card.appendChild(editButton);
     }
-    const deleteButton = document.createElement('button');
-    deleteButton.appendChild(document.createTextNode('Delete'));
-    deleteButton.class = "delete-button";
-    deleteButton.onclick = function() { deleteLessonPlan(row); };
-    card.appendChild(deleteButton);
+    if (deleteAccess) {
+        const deleteButton = document.createElement('button');
+        deleteButton.appendChild(document.createTextNode('Delete'));
+        deleteButton.class = "delete-button";
+        deleteButton.onclick = function() { deleteLessonPlan(row); };
+        card.appendChild(deleteButton);
+    }
     card.setAttribute("data-button-done", "");
 }
 
 window.addEventListener('message',function(event) {
     if(event.origin !== parentOrigin) return;
     if(event.data.type !== initMessageType) return;
-    editLinkData = event.data.accessibleLinkData;
+    editLinkData = event.data.accessibleLinkData.editAccess;
+    deleteAccess = event.data.accessibleLinkData.deleteAccess;
     parentSource = event.source;
     event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
-
     cards = document.querySelectorAll(".custom-card-content");
     console.log(cards);
     for (var i = 0; i < cards.length; i++) {

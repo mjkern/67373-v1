@@ -120,7 +120,7 @@ function getAccessInfo() {
             console.log(error);
             doSlightlyLater(getAccessInfo);
         })
-        .accessibleEditLinks();
+        .accessInfo();
 }
 
 // sends an init message to the given iframe
@@ -139,7 +139,6 @@ function sendInitialMessage(iframe) {
 function sendDataToAwesomeTable() {
     iframe = document.querySelectorAll('iframe[data-type="AwesomeTableView"]')[0].contentWindow;
     doUntil(function() { sendInitialMessage(iframe); }, awesomeTableConfirmed);
-    
 }
 
 ////////////////////////////////////////////////////////////////////////////////
