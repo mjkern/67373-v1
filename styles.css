@@ -56,3 +56,7 @@
         text-decoration: underline;
         cursor: pointer;
     }
+
+    .card {
+        box-shadow: none !important;
+    }

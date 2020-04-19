@@ -72,6 +72,7 @@ window.addEventListener('message', function(event) {
                     } else {
                         console.log("no delete permission");
                     }
+                    window.location.reload();
                 })
                 .withFailureHandler(function(error) {
                     console.log("failed to delete:");

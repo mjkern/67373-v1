@@ -8,6 +8,14 @@
                 <p class="grade">{{Grade Level(s)}}</p>
          </div>
     </a>
-    <div class="edit-div">
+    <div id="modal{{Row}}" class="modal">
+        <div class="modal-content">
+          <h4>Confirm Delete</h4>
+          <p>Are you sure you want to delete "{{Title of Lesson}}"? This cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="delete-button btn red" onclick="deleteLessonPlan({{Row}})">Delete</button>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        </div>
     </div>
 </div>

@@ -24,16 +24,19 @@ function addEditButtonToCard(card) {
     const row = card.getAttribute('data-spreadsheet-row');
     if (editLinkData[row]) {
         const editButton = document.createElement('button');
-        editButton.class = "edit-button";
+        editButton.classList.add("btn");
         editButton.onclick = function () { edit(row, editButton); };
         editButton.appendChild(document.createTextNode("Edit"));
         card.appendChild(editButton);
     }
     if (deleteAccess) {
-        const deleteButton = document.createElement('button');
+        const deleteButton = document.createElement('a');
         deleteButton.appendChild(document.createTextNode('Delete'));
-        deleteButton.class = "delete-button";
-        deleteButton.onclick = function() { deleteLessonPlan(row); };
+        // deleteButton.class = "delete-button";
+        // deleteButton.onclick = function() { deleteLessonPlan(row); };
+        deleteButton.href="#modal" + row;
+        deleteButton.classList.add("btn");
+        deleteButton.classList.add("modal-trigger");
         card.appendChild(deleteButton);
     }
     card.setAttribute("data-button-done", "");
@@ -52,6 +55,10 @@ window.addEventListener('message',function(event) {
         const card = cards[i];
         addEditButtonToCard(card);
     }
+    var elems = document.querySelectorAll('.modal');
+    var options = {};
+    var instances = M.Modal.init(elems, options);
+    console.log(M);
 },false);
 
 // for DOM updates in the awesome table cards
@@ -101,3 +108,12 @@ function deleteLessonPlan(rowNumber) {
     }
     parentSource.postMessage({"type": deleteMessageType, "rowNumber": rowNumber}, parentOrigin);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// For Materialize
+////////////////////////////////////////////////////////////////////////////////
+var script = document.createElement('script');
+script.type = 'text/javascript';
+
+script.src = 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js';
+document.head.appendChild(script);
