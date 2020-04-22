@@ -22,7 +22,9 @@ function addEditButtonToCard(card) {
     if (card.hasAttribute("data-button-done")){ return; }
     if (editLinkData == null){ return; }
     const row = card.getAttribute('data-spreadsheet-row');
+    console.log("adding edit button to card " + row);
     if (editLinkData[row]) {
+        console.log("has edit link");
         const editButton = document.createElement('button');
         editButton.classList.add("btn");
         editButton.onclick = function () { edit(row, editButton); };
@@ -31,6 +33,7 @@ function addEditButtonToCard(card) {
     }
     if (deleteAccess) {
         const deleteButton = document.createElement('a');
+        deleteButton.style = "float: right;";
         deleteButton.appendChild(document.createTextNode('Delete'));
         // deleteButton.class = "delete-button";
         // deleteButton.onclick = function() { deleteLessonPlan(row); };
@@ -45,6 +48,7 @@ function addEditButtonToCard(card) {
 window.addEventListener('message',function(event) {
     if(event.origin !== parentOrigin) return;
     if(event.data.type !== initMessageType) return;
+    if(editLinkData !== null) return;
     editLinkData = event.data.accessibleLinkData.editAccess;
     deleteAccess = event.data.accessibleLinkData.deleteAccess;
     parentSource = event.source;

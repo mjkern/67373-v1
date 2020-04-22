@@ -61,7 +61,7 @@ window.addEventListener('message', function(event) {
         case initResponseType:
             console.log('received response:  ',event.data);
             console.log(event.origin);
-            gotResponse=true;
+            gotResponse = true;
             break;
         case deleteMessageType:
             console.log('received delete message');
