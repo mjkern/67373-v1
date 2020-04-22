@@ -19,6 +19,9 @@ var accessInfo = null;
 // true once the awesome table confirms that it recieved the access info
 var gotResponse = false;
 
+// will be the awesome table iframe
+var iframe = null;
+
 ////////////////////////////////////////////////////////////////////////////////
 // Helper Functions
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +75,9 @@ window.addEventListener('message', function(event) {
                     } else {
                         console.log("no delete permission");
                     }
-                    window.location.reload();
+                    iframe.postMessage({ type: deleteResponseType },domain);
+                    gotResponse = false;
+                    setTimeout(sendDataToAwesomeTable, 3000);
                 })
                 .withFailureHandler(function(error) {
                     console.log("failed to delete:");
@@ -125,7 +130,7 @@ function getAccessInfo() {
 }
 
 // sends an init message to the given iframe
-function sendInitialMessage(iframe) {
+function sendInitialMessage() {
     var body = 'Hello!  The time is: ' + (new Date().getTime());
     var message = {
         "type": "initMessage",
@@ -139,7 +144,7 @@ function sendInitialMessage(iframe) {
 // send the init message to the awesome table until it confirms that it is received
 function sendDataToAwesomeTable() {
     iframe = document.querySelectorAll('iframe[data-type="AwesomeTableView"]')[0].contentWindow;
-    doUntil(function() { sendInitialMessage(iframe); }, awesomeTableConfirmed);
+    doUntil(function() { console.log("sending init message"); sendInitialMessage(iframe); }, awesomeTableConfirmed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

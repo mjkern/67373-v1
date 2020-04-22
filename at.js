@@ -1,4 +1,5 @@
 
+
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,8 +36,6 @@ function addEditButtonToCard(card) {
         const deleteButton = document.createElement('a');
         deleteButton.style = "float: right;";
         deleteButton.appendChild(document.createTextNode('Delete'));
-        // deleteButton.class = "delete-button";
-        // deleteButton.onclick = function() { deleteLessonPlan(row); };
         deleteButton.href="#modal" + row;
         deleteButton.classList.add("btn");
         deleteButton.classList.add("modal-trigger");
@@ -47,22 +46,28 @@ function addEditButtonToCard(card) {
 
 window.addEventListener('message',function(event) {
     if(event.origin !== parentOrigin) return;
-    if(event.data.type !== initMessageType) return;
-    if(editLinkData !== null) return;
-    editLinkData = event.data.accessibleLinkData.editAccess;
-    deleteAccess = event.data.accessibleLinkData.deleteAccess;
-    parentSource = event.source;
-    event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
-    cards = document.querySelectorAll(".custom-card-content");
-    console.log(cards);
-    for (var i = 0; i < cards.length; i++) {
-        const card = cards[i];
-        addEditButtonToCard(card);
+    if(event.data.type == initMessageType) {
+        console.log("got init message");
+        if(editLinkData !== null) return;
+        console.log("with body");
+        editLinkData = event.data.accessibleLinkData.editAccess;
+        deleteAccess = event.data.accessibleLinkData.deleteAccess;
+        parentSource = event.source;
+        event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
+        cards = document.querySelectorAll(".custom-card-content");
+        console.log(cards);
+        for (var i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            addEditButtonToCard(card);
+        }
+        var elems = document.querySelectorAll('.modal');
+        var options = {};
+        var instances = M.Modal.init(elems, options);
+        console.log(M);
+    } else if (event.data.type == deleteResponseType) {
+        location.reload(true);
+        editLinkData = null;
     }
-    var elems = document.querySelectorAll('.modal');
-    var options = {};
-    var instances = M.Modal.init(elems, options);
-    console.log(M);
 },false);
 
 // for DOM updates in the awesome table cards
