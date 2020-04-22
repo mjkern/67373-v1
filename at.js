@@ -1,5 +1,3 @@
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,9 +21,7 @@ function addEditButtonToCard(card) {
     if (card.hasAttribute("data-button-done")){ return; }
     if (editLinkData == null){ return; }
     const row = card.getAttribute('data-spreadsheet-row');
-    console.log("adding edit button to card " + row);
     if (editLinkData[row]) {
-        console.log("has edit link");
         const editButton = document.createElement('button');
         editButton.classList.add("btn");
         editButton.onclick = function () { edit(row, editButton); };
@@ -47,15 +43,12 @@ function addEditButtonToCard(card) {
 window.addEventListener('message',function(event) {
     if(event.origin !== parentOrigin) return;
     if(event.data.type == initMessageType) {
-        console.log("got init message");
         if(editLinkData !== null) return;
-        console.log("with body");
         editLinkData = event.data.accessibleLinkData.editAccess;
         deleteAccess = event.data.accessibleLinkData.deleteAccess;
         parentSource = event.source;
         event.source.postMessage({"type": initResponseType, "heardFromOrigin": event.origin, "gotLinkData": editLinkData},event.origin);
         cards = document.querySelectorAll(".custom-card-content");
-        console.log(cards);
         for (var i = 0; i < cards.length; i++) {
             const card = cards[i];
             addEditButtonToCard(card);
@@ -63,7 +56,6 @@ window.addEventListener('message',function(event) {
         var elems = document.querySelectorAll('.modal');
         var options = {};
         var instances = M.Modal.init(elems, options);
-        console.log(M);
     } else if (event.data.type == deleteResponseType) {
         location.reload(true);
         editLinkData = null;
@@ -95,9 +87,7 @@ observer.observe(body, {
 // Functions
 ////////////////////////////////////////////////////////////////////////////////
 function edit(rowNumber, button) {
-    console.log("trying to edit - row number " + rowNumber);
     if (editLinkData == null) {
-        console.log("no access data yet");
         return;
     }
     link = editLinkData[rowNumber];
@@ -105,14 +95,12 @@ function edit(rowNumber, button) {
         window.open(link, '_blank');
     }
     else {
-        console.log("no access");
         button.innerText = "No Edit Access";
     }
 }
 
 function deleteLessonPlan(rowNumber) {
     if (parentSource == null) {
-        console.log("no parent source yet");
         return;
     }
     parentSource.postMessage({"type": deleteMessageType, "rowNumber": rowNumber}, parentOrigin);

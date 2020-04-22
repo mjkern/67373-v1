@@ -58,26 +58,21 @@ function doWhenBoth(p1, p2, f) {
 
 // listen for web socket messages
 window.addEventListener('message', function(event) {
-    console.log("got a message from " + event.origin);
     if(event.origin !== domain) return;
     switch (event.data.type) {
         case initResponseType:
-            console.log('received response:  ',event.data);
-            console.log(event.origin);
             gotResponse = true;
             break;
         case deleteMessageType:
-            console.log('received delete message');
             google.script.run
                 .withSuccessHandler(function(deleted) {
                     if (deleted) {
-                        console.log("successfully deleted");
+                        iframe.postMessage({ type: deleteResponseType },domain);
+                        gotResponse = false;
+                        setTimeout(sendDataToAwesomeTable, 3000);
                     } else {
-                        console.log("no delete permission");
+                        console.log("failed to delete");
                     }
-                    iframe.postMessage({ type: deleteResponseType },domain);
-                    gotResponse = false;
-                    setTimeout(sendDataToAwesomeTable, 3000);
                 })
                 .withFailureHandler(function(error) {
                     console.log("failed to delete:");
@@ -116,14 +111,11 @@ function awesomeTableConfirmed() {
 
 // get the access information for editing lesson plans from the google sheet
 function getAccessInfo() {
-    console.log("getting access info");
     google.script.run
         .withSuccessHandler(function(accessInfoResult) {
-            console.log("got access info");
             accessInfo = accessInfoResult;
         })
         .withFailureHandler(function(error) {
-            console.log(error);
             doSlightlyLater(getAccessInfo);
         })
         .accessInfo();
@@ -137,14 +129,13 @@ function sendInitialMessage() {
         "body": body,
         "accessibleLinkData": accessInfo
     };
-    console.log('blog.local:  sending message: ' + message);
     iframe.postMessage(message,domain); //send the message and target URI
 }
 
 // send the init message to the awesome table until it confirms that it is received
 function sendDataToAwesomeTable() {
     iframe = document.querySelectorAll('iframe[data-type="AwesomeTableView"]')[0].contentWindow;
-    doUntil(function() { console.log("sending init message"); sendInitialMessage(iframe); }, awesomeTableConfirmed);
+    doUntil(function() { sendInitialMessage(iframe); }, awesomeTableConfirmed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
