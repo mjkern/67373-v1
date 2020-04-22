@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
 ////////////////////////////////////////////////////////////////////////////////
-const parentOrigin = 'https://n-r2hhbj5ldn54lekwf4x2jbxvxnmwltraikjhefa-0lu-script.googleusercontent.com';
+const parentOrigin = "https://n-jgjpf5t6kbhyy43vnmm3ckpivzpqhqjs4bnwipi-0lu-script.googleusercontent.com";
 const initMessageType = 'initMessage';
 const initResponseType = 'initResponse';
 const deleteMessageType = 'deleteMessage';
